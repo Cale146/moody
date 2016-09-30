@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -13,7 +15,9 @@ public class Trading {
         int n = Integer.parseInt(splitted[0]);
         int k = Integer.parseInt(splitted[1]);
         double[][] tradesArray = new double[3][n];
-        double[] finalArray = new double[20];
+        double[] calcArray = new double[n];
+        double[] finalArray = new double[k];
+        double finalValue = 0;
 
         for(int i = 0; i <= 2; i++)
         {
@@ -23,9 +27,7 @@ public class Trading {
             {
                 int test = rowArray.length;
                 tradesArray[i][j] = Double.parseDouble(rowArray[j]);
-                System.out.print(tradesArray[i][j] + " ");
             }
-            System.out.print("\n");
         }
 
         for(int y = 0; y < n; y++)
@@ -33,10 +35,22 @@ public class Trading {
             double prob = tradesArray[0][y];
             double prof = tradesArray[1][y];
             double loss = tradesArray[2][y];
-            finalArray[y] = (prob*prof) - (prob*loss);
-            System.out.print(finalArray[y] + " ");
+            calcArray[y] = prob*prof-(1-prob)*loss;
         }
 
+        //sort the array from lowest to highest
+        Arrays.sort(calcArray);
 
+        for(int x = 0; x < k; x++)
+        {
+            finalArray[x] = calcArray[calcArray.length - x - 1];
+            if(finalArray[x] > 0)
+            {
+                finalValue += finalArray[x];
+            }
+        }
+
+        DecimalFormat f = new DecimalFormat("#0.00");
+        System.out.print(f.format(finalValue));
     }
 }
